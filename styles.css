@@ -1,47 +1,115 @@
-/* styles.css */
-body {
-    font-family: 'Arial', sans-serif;
-    text-align: center;
-    background-color: #faf8ef;
-    margin: 0;
-    padding: 20px;
-}
+document.addEventListener('DOMContentLoaded', () => {
+    const gridSize = 4;
+    const grid = [];
+    let score = 0;
 
-#game-container {
-    margin: 0 auto;
-    width: 300px;
-}
+    // ゲームの初期化
+    function initGame() {
+        for (let i = 0; i < gridSize; i++) {
+            grid[i] = [];
+            for (let j = 0; j < gridSize; j++) {
+                grid[i][j] = 0;
+                setTileValue(i, j, 0);
+            }
+        }
+        score = 0;
+        updateScore();
+        addRandomTile();
+        addRandomTile();
+    }
 
-.grid-container {
-    background-color: #bbada0;
-    border-radius: 10px;
-    padding: 10px;
-}
+    // ランダムな場所にタイルを追加
+    function addRandomTile() {
+        let emptyTiles = [];
+        for (let i = 0; i < gridSize; i++) {
+            for (let j = 0; j < gridSize; j++) {
+                if (grid[i][j] === 0) {
+                    emptyTiles.push({ row: i, col: j });
+                }
+            }
+        }
+        if (emptyTiles.length > 0) {
+            const randomTile = emptyTiles[Math.floor(Math.random() * emptyTiles.length)];
+            grid[randomTile.row][randomTile.col] = Math.random() < 0.9 ? 2 : 4;
+            setTileValue(randomTile.row, randomTile.col, grid[randomTile.row][randomTile.col]);
+        }
+    }
 
-.grid-row {
-    display: flex;
-}
+    // タイルの値を設定
+    function setTileValue(row, col, value) {
+        const tile = document.querySelector(`.grid-row:nth-child(${row + 1}) .grid-cell:nth-child(${col + 1})`);
+        updateTile(tile, value);
+    }
 
-.grid-cell {
-    width: 60px;
-    height: 60px;
-    background-color: #cdc1b4;
-    margin: 5px;
-    border-radius: 3px;
-}
+    // タイルの画像を更新
+    function updateTile(tile, value) {
+        const tileImage = tile.querySelector('.tile-image');
+        if (value > 0) {
+            tileImage.src = `images/${value}.png`;
+            tileImage.style.display = 'block';
+        } else {
+            tileImage.src = '';
+            tileImage.style.display = 'none';
+        }
+    }
 
-#score {
-    margin-top: 20px;
-    font-size: 24px;
-}
+    // スコアの更新
+    function updateScore() {
+        const scoreElement = document.getElementById('score');
+        scoreElement.textContent = `スコア: ${score}`;
+    }
 
-#reset-button {
-    margin-top: 20px;
-    padding: 10px 20px;
-    font-size: 18px;
-    background-color: #8f7a66;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
+    // タイルを移動する
+    function moveTiles(direction) {
+        let moved = false;
+        // タイル移動のロジック
+        // 上、下、左、右への移動処理を実装
+        // 各方向に対して、タイルを移動させて合体させる
+
+        if (moved) {
+            addRandomTile();
+            updateScore();
+            if (checkGameOver()) {
+                alert('ゲームオーバー!');
+            }
+        }
+    }
+
+    // ゲームオーバーの確認
+    function checkGameOver() {
+        // 移動可能なタイルがあるかどうかを確認
+        for (let i = 0; i < gridSize; i++) {
+            for (let j = 0; j < gridSize; j++) {
+                if (grid[i][j] === 0) return false;
+                if (i > 0 && grid[i][j] === grid[i - 1][j]) return false;
+                if (i < gridSize - 1 && grid[i][j] === grid[i + 1][j]) return false;
+                if (j > 0 && grid[i][j] === grid[i][j - 1]) return false;
+                if (j < gridSize - 1 && grid[i][j] === grid[i][j + 1]) return false;
+            }
+        }
+        return true;
+    }
+
+    // リセットボタンの処理
+    document.getElementById('reset-button').addEventListener('click', initGame);
+
+    // キー入力処理
+    document.addEventListener('keydown', (e) => {
+        switch (e.key) {
+            case 'ArrowUp':
+                moveTiles('up');
+                break;
+            case 'ArrowDown':
+                moveTiles('down');
+                break;
+            case 'ArrowLeft':
+                moveTiles('left');
+                break;
+            case 'ArrowRight':
+                moveTiles('right');
+                break;
+        }
+    });
+
+    initGame(); // ゲームの初期化を呼び出す
+});
