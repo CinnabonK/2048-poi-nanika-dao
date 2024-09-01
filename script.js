@@ -1,12 +1,10 @@
 const gridSize = 4;
 let grid = [];
 let score = 0;
-let isMobileLayout = false;
 
 document.addEventListener('DOMContentLoaded', () => {
     initGame();
     document.getElementById('reset-button').addEventListener('click', resetGame);
-    document.getElementById('toggle-layout-button').addEventListener('click', toggleLayout);
 });
 
 function initGame() {
@@ -163,22 +161,6 @@ function resetGame() {
     updateGrid();
 }
 
-function toggleLayout() {
-    const button = document.getElementById('toggle-layout-button');
-    const body = document.body;
-
-    if (isMobileLayout) {
-        body.classList.remove('mobile-layout');
-        button.textContent = 'スマホ版に切り替え';
-    } else {
-        body.classList.add('mobile-layout');
-        button.textContent = 'PC版に切り替え';
-    }
-
-    isMobileLayout = !isMobileLayout;
-    resetGame();
-}
-
 function addRandomTile() {
     const emptyCells = getEmptyCells();
     if (emptyCells.length > 0) {
@@ -214,19 +196,19 @@ function updateGrid() {
 function getTileColor(value) {
     const colors = {
         0: '#cdc1b4',
-        2: '#ffeb3b',   // 黄色
-        4: '#ff9800',   // オレンジ
-        8: '#ff5722',   // 濃いオレンジ
-        16: '#f44336',  // 赤
-        32: '#e91e63',  // ピンク
-        64: '#9c27b0',  // 紫
-        128: '#673ab7', // 濃い紫
-        256: '#3f51b5', // 青
-        512: '#2196f3', // 明るい青
-        1024: '#00bcd4',// シアン
-        2048: '#009688',// 緑
-        4096: '#4caf50',// 明るい緑
-        8192: '#8bc34a',// ライム
+        2: '#eee4da',
+        4: '#ede0c8',
+        8: '#f2b179',
+        16: '#f59563',
+        32: '#f67c5f',
+        64: '#f65e3b',
+        128: '#edcf72',
+        256: '#edcc61',
+        512: '#edc850',
+        1024: '#edc53f',
+        2048: '#edc22e',
+        4096: '#3c3a32',
+        8192: '#3c3a32',
     };
-    return colors[value] || '#000000'; // 他の値に対しては黒色
+    return colors[value] || '#cdc1b4';
 }
