@@ -2,7 +2,10 @@ const gridSize = 4;
 let grid = [];
 let score = 0;
 
-document.addEventListener('DOMContentLoaded', initGame);
+document.addEventListener('DOMContentLoaded', () => {
+    initGame();
+    document.getElementById('reset-button').addEventListener('click', resetGame);
+});
 
 function initGame() {
     createGrid();
@@ -11,7 +14,6 @@ function initGame() {
     updateGrid();
     updateScore(0);
     document.addEventListener('keydown', handleKeyPress);
-    document.getElementById('reset-button').addEventListener('click', resetGame);
 }
 
 function createGrid() {
@@ -207,7 +209,6 @@ function getTileColor(value) {
         2048: '#edc22e',
         4096: '#3c3a32',
         8192: '#3c3a32',
-        // 必要に応じて他の値の色を追加
     };
     return colors[value] || '#cdc1b4';
 }
