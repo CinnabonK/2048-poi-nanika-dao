@@ -39,7 +39,7 @@ body {
     align-items: center;
     font-size: 24px;
     font-weight: bold;
-    color: white; /* テキストカラーを白に設定 */
+    color: black; /* テキストカラーを白に設定 */
     transition: background-color 0.3s ease; /* 色の変更をスムーズにする */
 }
 
