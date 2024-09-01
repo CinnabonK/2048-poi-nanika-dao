@@ -1,57 +1,37 @@
 body {
-    font-family: 'Arial', sans-serif;
-    text-align: center;
+    font-family: Arial, sans-serif;
     background-color: #faf8ef;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
     margin: 0;
-    padding: 20px;
 }
 
-#game-container {
-    margin: 0 auto;
-    width: 300px;
+.game-container {
+    display: inline-block;
+    position: relative;
+    margin: auto;
 }
 
-.grid-container {
+#grid-container {
+    width: 500px;
+    height: 500px;
     background-color: #bbada0;
     border-radius: 10px;
-    padding: 10px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 10px;
 }
 
-.grid-row {
-    display: flex;
-}
-
-.grid-cell {
-    width: 60px;
-    height: 60px;
-    background-color: #cdc1b4;
-    margin: 5px;
-    border-radius: 3px;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.tile-image {
+.tile {
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    display: none; /* 最初は非表示 */
-}
-
-#score {
-    margin-top: 20px;
-    font-size: 24px;
-}
-
-#reset-button {
-    margin-top: 20px;
-    padding: 10px 20px;
-    font-size: 18px;
-    background-color: #8f7a66;
-    color: white;
-    border: none;
+    background-color: #cdc1b4;
     border-radius: 5px;
-    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    font-weight: bold;
 }
