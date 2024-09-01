@@ -60,20 +60,24 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // タイルを移動する
-    function moveTiles(direction) {
-        let moved = false;
-        // タイル移動のロジックを実装
-        // 上、下、左、右への移動処理
-        // 各方向に対して、タイルを移動させて合体させる
+// 中括弧のバランスを確認
+function moveTiles(direction) {
+    let moved = false;
+    // 方向に応じたタイル移動のロジックをここに実装
+    // 例えば、'up', 'down', 'left', 'right' に応じた処理を行います。
 
-        if (moved) {
-            addRandomTile();
-            updateScore();
-            if (checkGameOver()) {
-                alert('ゲームオーバー!');
-            }
+    // 仮にタイルが動いた場合、次のタイルを追加する
+    if (moved) {
+        addRandomTile();
+        updateScore();
+        if (checkGameOver()) {
+            alert('ゲームオーバー!');
         }
     }
+}
+
+// その他の関数も同様に中括弧のバランスを確認
+
 
     // ゲームオーバーの確認
     function checkGameOver() {
