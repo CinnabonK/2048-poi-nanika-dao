@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateTile(tile, value) {
         const tileImage = tile.querySelector('.tile-image');
         if (value > 0) {
-            tileImage.src = `images/${value}.svg`;
+            tileImage.src = `${value}.svg`;
             tileImage.style.display = 'block';
         } else {
             tileImage.src = '';
