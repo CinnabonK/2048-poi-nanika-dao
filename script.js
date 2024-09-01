@@ -46,10 +46,69 @@ function handleKeyPress(event) {
 }
 
 function moveTiles(direction) {
-    // タイルの移動ロジックをここに実装します
     let moved = false;
-    // 方向に応じたスライド処理
-    // moved = true のとき新しいタイルが追加される
+    switch (direction) {
+        case 'up':
+            for (let y = 0; y < gridSize; y++) {
+                for (let x = 1; x < gridSize; x++) {
+                    if (grid[x][y] !== 0) {
+                        let newX = x;
+                        while (newX > 0 && grid[newX - 1][y] === 0) {
+                            grid[newX - 1][y] = grid[newX][y];
+                            grid[newX][y] = 0;
+                            newX--;
+                            moved = true;
+                        }
+                    }
+                }
+            }
+            break;
+        case 'down':
+            for (let y = 0; y < gridSize; y++) {
+                for (let x = gridSize - 2; x >= 0; x--) {
+                    if (grid[x][y] !== 0) {
+                        let newX = x;
+                        while (newX < gridSize - 1 && grid[newX + 1][y] === 0) {
+                            grid[newX + 1][y] = grid[newX][y];
+                            grid[newX][y] = 0;
+                            newX++;
+                            moved = true;
+                        }
+                    }
+                }
+            }
+            break;
+        case 'left':
+            for (let x = 0; x < gridSize; x++) {
+                for (let y = 1; y < gridSize; y++) {
+                    if (grid[x][y] !== 0) {
+                        let newY = y;
+                        while (newY > 0 && grid[x][newY - 1] === 0) {
+                            grid[x][newY - 1] = grid[x][newY];
+                            grid[x][newY] = 0;
+                            newY--;
+                            moved = true;
+                        }
+                    }
+                }
+            }
+            break;
+        case 'right':
+            for (let x = 0; x < gridSize; x++) {
+                for (let y = gridSize - 2; y >= 0; y--) {
+                    if (grid[x][y] !== 0) {
+                        let newY = y;
+                        while (newY < gridSize - 1 && grid[x][newY + 1] === 0) {
+                            grid[x][newY + 1] = grid[x][newY];
+                            grid[x][newY] = 0;
+                            newY++;
+                            moved = true;
+                        }
+                    }
+                }
+            }
+            break;
+    }
     return moved;
 }
 
