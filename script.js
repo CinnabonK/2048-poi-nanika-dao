@@ -1,6 +1,6 @@
 function moveTiles(direction) {
     let moved = false;
-    let merged = Array(gridSize).fill(null).map(() => Array(gridSize).fill(false));
+    let merged = Array(gridSize).fill(null).map(() => Array(gridSize).fill(false)); // 毎回リセット
 
     switch (direction) {
         case 'up':
@@ -24,8 +24,6 @@ function moveTiles(direction) {
                 }
             }
             break;
-        // 他の方向についても同様に修正
-        // down
         case 'down':
             for (let y = 0; y < gridSize; y++) {
                 for (let x = gridSize - 2; x >= 0; x--) {
@@ -47,7 +45,6 @@ function moveTiles(direction) {
                 }
             }
             break;
-        // left
         case 'left':
             for (let x = 0; x < gridSize; x++) {
                 for (let y = 1; y < gridSize; y++) {
@@ -69,7 +66,6 @@ function moveTiles(direction) {
                 }
             }
             break;
-        // right
         case 'right':
             for (let x = 0; x < gridSize; x++) {
                 for (let y = gridSize - 2; y >= 0; y--) {
