@@ -1,5 +1,6 @@
 const gridSize = 4;
 let grid = [];
+let score = 0;
 
 document.addEventListener('DOMContentLoaded', initGame);
 
@@ -8,7 +9,9 @@ function initGame() {
     addRandomTile();
     addRandomTile();
     updateGrid();
+    updateScore(0);
     document.addEventListener('keydown', handleKeyPress);
+    document.getElementById('reset-button').addEventListener('click', resetGame);
 }
 
 function createGrid() {
@@ -66,6 +69,7 @@ function moveTiles(direction) {
                             grid[newX][y] = 0;
                             merged[newX - 1][y] = true;
                             moved = true;
+                            updateScore(grid[newX - 1][y]);
                         }
                     }
                 }
@@ -87,6 +91,7 @@ function moveTiles(direction) {
                             grid[newX][y] = 0;
                             merged[newX + 1][y] = true;
                             moved = true;
+                            updateScore(grid[newX + 1][y]);
                         }
                     }
                 }
@@ -108,6 +113,7 @@ function moveTiles(direction) {
                             grid[x][newY] = 0;
                             merged[x][newY - 1] = true;
                             moved = true;
+                            updateScore(grid[x][newY - 1]);
                         }
                     }
                 }
@@ -129,6 +135,7 @@ function moveTiles(direction) {
                             grid[x][newY] = 0;
                             merged[x][newY + 1] = true;
                             moved = true;
+                            updateScore(grid[x][newY + 1]);
                         }
                     }
                 }
@@ -136,6 +143,20 @@ function moveTiles(direction) {
             break;
     }
     return moved;
+}
+
+function updateScore(value) {
+    score += value;
+    document.getElementById('score').textContent = score;
+}
+
+function resetGame() {
+    score = 0;
+    updateScore(0);
+    createGrid();
+    addRandomTile();
+    addRandomTile();
+    updateGrid();
 }
 
 function addRandomTile() {
@@ -175,6 +196,17 @@ function getTileColor(value) {
         0: '#cdc1b4',
         2: '#eee4da',
         4: '#ede0c8',
+        8: '#f2b179',
+        16: '#f59563',
+        32: '#f67c5f',
+        64: '#f65e3b',
+        128: '#edcf72',
+        256: '#edcc61',
+        512: '#edc850',
+        1024: '#edc53f',
+        2048: '#edc22e',
+        4096: '#3c3a32',
+        8192: '#3c3a32',
         // 必要に応じて他の値の色を追加
     };
     return colors[value] || '#cdc1b4';
