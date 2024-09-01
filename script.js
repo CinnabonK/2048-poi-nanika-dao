@@ -1,10 +1,12 @@
 const gridSize = 4;
 let grid = [];
 let score = 0;
+let isMobileLayout = false;
 
 document.addEventListener('DOMContentLoaded', () => {
     initGame();
     document.getElementById('reset-button').addEventListener('click', resetGame);
+    document.getElementById('toggle-layout-button').addEventListener('click', toggleLayout);
 });
 
 function initGame() {
@@ -159,6 +161,22 @@ function resetGame() {
     addRandomTile();
     addRandomTile();
     updateGrid();
+}
+
+function toggleLayout() {
+    const button = document.getElementById('toggle-layout-button');
+    const body = document.body;
+
+    if (isMobileLayout) {
+        body.classList.remove('mobile-layout');
+        button.textContent = 'スマホ版に切り替え';
+    } else {
+        body.classList.add('mobile-layout');
+        button.textContent = 'PC版に切り替え';
+    }
+
+    isMobileLayout = !isMobileLayout;
+    resetGame();
 }
 
 function addRandomTile() {
