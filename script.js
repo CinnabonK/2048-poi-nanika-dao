@@ -1,129 +1,96 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const gridSize = 4;
-    const grid = [];
-    let score = 0;
+const gridSize = 4;
+let grid = [];
 
-    function initGame() {
-        for (let i = 0; i < gridSize; i++) {
-            grid[i] = [];
-            for (let j = 0; j < gridSize; j++) {
-                grid[i][j] = 0;
-                setTileValue(i, j, 0);
-            }
-        }
-        score = 0;
-        updateScore();
+document.addEventListener('DOMContentLoaded', initGame);
+
+function initGame() {
+    createGrid();
+    addRandomTile();
+    addRandomTile();
+    updateGrid();
+    document.addEventListener('keydown', handleKeyPress);
+}
+
+function createGrid() {
+    grid = Array(gridSize).fill(null).map(() => Array(gridSize).fill(0));
+    const gridContainer = document.getElementById('grid-container');
+    gridContainer.innerHTML = '';
+    for (let i = 0; i < gridSize * gridSize; i++) {
+        const tile = document.createElement('div');
+        tile.classList.add('tile');
+        gridContainer.appendChild(tile);
+    }
+}
+
+function handleKeyPress(event) {
+    let moved = false;
+    switch (event.key) {
+        case 'ArrowUp':
+            moved = moveTiles('up');
+            break;
+        case 'ArrowDown':
+            moved = moveTiles('down');
+            break;
+        case 'ArrowLeft':
+            moved = moveTiles('left');
+            break;
+        case 'ArrowRight':
+            moved = moveTiles('right');
+            break;
+    }
+
+    if (moved) {
         addRandomTile();
-        addRandomTile();
+        updateGrid();
     }
+}
 
-    function addRandomTile() {
-        let emptyTiles = [];
-        for (let i = 0; i < gridSize; i++) {
-            for (let j = 0; j < gridSize; j++) {
-                if (grid[i][j] === 0) {
-                    emptyTiles.push({ row: i, col: j });
-                }
-            }
-        }
-        if (emptyTiles.length > 0) {
-            const randomTile = emptyTiles[Math.floor(Math.random() * emptyTiles.length)];
-            grid[randomTile.row][randomTile.col] = Math.random() < 0.9 ? 2 : 4;
-            setTileValue(randomTile.row, randomTile.col, grid[randomTile.row][randomTile.col]);
-        }
+function moveTiles(direction) {
+    // タイルの移動ロジックをここに実装します
+    let moved = false;
+    // 方向に応じたスライド処理
+    // moved = true のとき新しいタイルが追加される
+    return moved;
+}
+
+function addRandomTile() {
+    const emptyCells = getEmptyCells();
+    if (emptyCells.length > 0) {
+        const randomCell = emptyCells[Math.floor(Math.random() * emptyCells.length)];
+        grid[randomCell.x][randomCell.y] = Math.random() > 0.1 ? 2 : 4;
     }
+}
 
-    function setTileValue(row, col, value) {
-        const tile = document.querySelector(`.grid-row:nth-child(${row + 1}) .grid-cell:nth-child(${col + 1})`);
-        updateTile(tile, value);
-    }
-
-    function updateTile(tile, value) {
-        const tileImage = tile.querySelector('.tile-image');
-        if (value > 0) {
-            tileImage.src = `${value}.svg`;
-            tileImage.style.display = 'block';
-        } else {
-            tileImage.src = '';
-            tileImage.style.display = 'none';
-        }
-    }
-
-    function updateScore() {
-        const scoreElement = document.getElementById('score');
-        scoreElement.textContent = `スコア: ${score}`;
-    }
-
-    function moveTiles(direction) {
-        let moved = false;
-
-        if (direction === 'up') {
-            for (let col = 0; col < gridSize; col++) {
-                let combined = Array(gridSize).fill(false);
-                for (let row = 1; row < gridSize; row++) {
-                    if (grid[row][col] !== 0) {
-                        let newRow = row;
-                        while (newRow > 0 && grid[newRow - 1][col] === 0) {
-                            grid[newRow - 1][col] = grid[newRow][col];
-                            grid[newRow][col] = 0;
-                            newRow--;
-                            moved = true;
-                        }
-                        if (newRow > 0 && grid[newRow - 1][col] === grid[newRow][col] && !combined[newRow - 1]) {
-                            grid[newRow - 1][col] *= 2;
-                            grid[newRow][col] = 0;
-                            combined[newRow - 1] = true;
-                            score += grid[newRow - 1][col];
-                            moved = true;
-                        }
-                    }
-                }
-            }
-        }
-
-        // ここに他の方向（down, left, right）の処理を追加します
-
-        if (moved) {
-            addRandomTile();
-            updateScore();
-            if (checkGameOver()) {
-                alert('ゲームオーバー!');
+function getEmptyCells() {
+    const emptyCells = [];
+    for (let x = 0; x < gridSize; x++) {
+        for (let y = 0; y < gridSize; y++) {
+            if (grid[x][y] === 0) {
+                emptyCells.push({ x, y });
             }
         }
     }
+    return emptyCells;
+}
 
-    function checkGameOver() {
-        for (let i = 0; i < gridSize; i++) {
-            for (let j = 0; j < gridSize; j++) {
-                if (grid[i][j] === 0) return false;
-                if (i > 0 && grid[i][j] === grid[i - 1][j]) return false;
-                if (i < gridSize - 1 && grid[i][j] === grid[i + 1][j]) return false;
-                if (j > 0 && grid[i][j] === grid[i][j - 1]) return false;
-                if (j < gridSize - 1 && grid[i][j] === grid[i][j + 1]) return false;
-            }
+function updateGrid() {
+    const tiles = document.querySelectorAll('.tile');
+    for (let x = 0; x < gridSize; x++) {
+        for (let y = 0; y < gridSize; y++) {
+            const tileValue = grid[x][y];
+            const tile = tiles[x * gridSize + y];
+            tile.textContent = tileValue === 0 ? '' : tileValue;
+            tile.style.backgroundColor = getTileColor(tileValue);
         }
-        return true;
     }
+}
 
-    document.getElementById('reset-button').addEventListener('click', initGame);
-
-    // キーイベントをリスナーで設定
-    document.addEventListener('keydown', (e) => {
-        switch (e.key) {
-            case 'ArrowUp':
-                moveTiles('up');
-                break;
-            case 'ArrowDown':
-                moveTiles('down');
-                break;
-            case 'ArrowLeft':
-                moveTiles('left');
-                break;
-            case 'ArrowRight':
-                moveTiles('right');
-                break;
-        }
-    });
-
-    initGame();
-});
+function getTileColor(value) {
+    const colors = {
+        0: '#cdc1b4',
+        2: '#eee4da',
+        4: '#ede0c8',
+        // 必要に応じて他の値の色を追加
+    };
+    return colors[value] || '#cdc1b4';
+}
