@@ -3,7 +3,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const grid = [];
     let score = 0;
 
-    // ゲームの初期化
     function initGame() {
         for (let i = 0; i < gridSize; i++) {
             grid[i] = [];
@@ -18,7 +17,6 @@ document.addEventListener('DOMContentLoaded', () => {
         addRandomTile();
     }
 
-    // ランダムな場所にタイルを追加
     function addRandomTile() {
         let emptyTiles = [];
         for (let i = 0; i < gridSize; i++) {
@@ -35,13 +33,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // タイルの値を設定
     function setTileValue(row, col, value) {
         const tile = document.querySelector(`.grid-row:nth-child(${row + 1}) .grid-cell:nth-child(${col + 1})`);
         updateTile(tile, value);
     }
 
-    // タイルの画像を更新
     function updateTile(tile, value) {
         const tileImage = tile.querySelector('.tile-image');
         if (value > 0) {
@@ -53,35 +49,50 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // スコアの更新
     function updateScore() {
         const scoreElement = document.getElementById('score');
         scoreElement.textContent = `スコア: ${score}`;
     }
 
-    // タイルを移動する
-// 中括弧のバランスを確認
-function moveTiles(direction) {
-    let moved = false;
-    // 方向に応じたタイル移動のロジックをここに実装
-    // 例えば、'up', 'down', 'left', 'right' に応じた処理を行います。
+    function moveTiles(direction) {
+        let moved = false;
 
-    // 仮にタイルが動いた場合、次のタイルを追加する
-    if (moved) {
-        addRandomTile();
-        updateScore();
-        if (checkGameOver()) {
-            alert('ゲームオーバー!');
+        if (direction === 'up') {
+            for (let col = 0; col < gridSize; col++) {
+                let combined = Array(gridSize).fill(false);
+                for (let row = 1; row < gridSize; row++) {
+                    if (grid[row][col] !== 0) {
+                        let newRow = row;
+                        while (newRow > 0 && grid[newRow - 1][col] === 0) {
+                            grid[newRow - 1][col] = grid[newRow][col];
+                            grid[newRow][col] = 0;
+                            newRow--;
+                            moved = true;
+                        }
+                        if (newRow > 0 && grid[newRow - 1][col] === grid[newRow][col] && !combined[newRow - 1]) {
+                            grid[newRow - 1][col] *= 2;
+                            grid[newRow][col] = 0;
+                            combined[newRow - 1] = true;
+                            score += grid[newRow - 1][col];
+                            moved = true;
+                        }
+                    }
+                }
+            }
+        }
+
+        // ここに他の方向（down, left, right）の処理を追加します
+
+        if (moved) {
+            addRandomTile();
+            updateScore();
+            if (checkGameOver()) {
+                alert('ゲームオーバー!');
+            }
         }
     }
-}
 
-// その他の関数も同様に中括弧のバランスを確認
-
-
-    // ゲームオーバーの確認
     function checkGameOver() {
-        // 移動可能なタイルがあるかどうかを確認
         for (let i = 0; i < gridSize; i++) {
             for (let j = 0; j < gridSize; j++) {
                 if (grid[i][j] === 0) return false;
@@ -94,10 +105,9 @@ function moveTiles(direction) {
         return true;
     }
 
-    // リセットボタンの処理
     document.getElementById('reset-button').addEventListener('click', initGame);
 
-    // キー入力処理
+    // キーイベントをリスナーで設定
     document.addEventListener('keydown', (e) => {
         switch (e.key) {
             case 'ArrowUp':
@@ -115,5 +125,5 @@ function moveTiles(direction) {
         }
     });
 
-    initGame(); // ゲームの初期化を呼び出す
+    initGame();
 });
