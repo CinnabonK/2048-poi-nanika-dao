@@ -1,3 +1,4 @@
+/* ベーススタイル */
 body {
     font-family: Arial, sans-serif;
     background-color: #faf8ef;
@@ -16,12 +17,15 @@ body {
 }
 
 .score-container {
-    margin-bottom: 10px;
+    margin-bottom: 20px;
+    font-size: 18px;
 }
 
 #grid-container {
-    width: 500px;
-    height: 500px;
+    width: 100%;
+    max-width: 500px;
+    height: 100%;
+    max-height: 500px;
     background-color: #bbada0;
     border-radius: 10px;
     display: grid;
@@ -39,14 +43,58 @@ body {
     align-items: center;
     font-size: 24px;
     font-weight: bold;
-    color: #000000; /* テキストカラーを白に設定 */
-    transition: background-color 0.3s ease; /* 色の変更をスムーズにする */
+    color: white;
+    transition: background-color 0.3s ease;
 }
 
-
+/* リセットボタンのスタイル */
 #reset-button {
     padding: 10px 20px;
-    font-size: 16px;
-    margin-top: 10px;
+    font-size: 18px;
+    background-color: #ff5722;
+    border: none;
+    border-radius: 10px;
+    color: white;
     cursor: pointer;
+    box-shadow: 0 4px #d84315;
+    transition: all 0.3s ease;
+}
+
+#reset-button:hover {
+    background-color: #e64a19;
+}
+
+#reset-button:active {
+    box-shadow: 0 2px #d84315;
+    transform: translateY(2px);
+}
+
+/* レスポンシブデザイン: スマホ対応 */
+@media (max-width: 600px) {
+    body {
+        flex-direction: column;
+        height: auto;
+        padding: 20px;
+    }
+
+    .score-container {
+        font-size: 16px;
+        margin-bottom: 15px;
+    }
+
+    #grid-container {
+        width: 100%;
+        max-width: 300px;
+        max-height: 300px;
+        grid-gap: 5px;
+    }
+
+    .tile {
+        font-size: 20px;
+    }
+
+    #reset-button {
+        padding: 8px 16px;
+        font-size: 16px;
+    }
 }
