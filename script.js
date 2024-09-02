@@ -7,7 +7,6 @@ document.addEventListener('DOMContentLoaded', () => {
     loadHighScore();
     initGame();
     document.getElementById('reset-button').addEventListener('click', resetGame);
-    document.getElementById('retry-button').addEventListener('click', resetGame);
     setupTouchControls();
 });
 
@@ -204,6 +203,9 @@ function updateGrid() {
             tile.textContent = tileValue === 0 ? '' : tileValue;
             tile.style.backgroundColor = getTileColor(tileValue);
         }
+    }
+    if (checkGameOver()) {
+        showGameOver();
     }
 }
 
