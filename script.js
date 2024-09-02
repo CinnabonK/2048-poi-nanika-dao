@@ -1,8 +1,10 @@
 const gridSize = 4;
 let grid = [];
 let score = 0;
+let highScore = 0;
 
 document.addEventListener('DOMContentLoaded', () => {
+    loadHighScore();  // ハイスコアの読み込み
     initGame();
     document.getElementById('reset-button').addEventListener('click', resetGame);
     setupTouchControls();  // スワイプ操作のセットアップ
@@ -151,6 +153,11 @@ function moveTiles(direction) {
 function updateScore(value) {
     score += value;
     document.getElementById('score').textContent = score;
+    if (score > highScore) {
+        highScore = score;
+        document.getElementById('high-score').textContent = highScore;
+        saveHighScore(highScore);  // ハイスコアの保存
+    }
 }
 
 function resetGame() {
@@ -212,6 +219,20 @@ function getTileColor(value) {
         8192: '#8bc34a',// ライム
     };
     return colors[value] || '#000000'; // 他の値に対しては黒色
+}
+
+// ハイスコアを localStorage から読み込む
+function loadHighScore() {
+    const savedHighScore = localStorage.getItem('2048HighScore');
+    if (savedHighScore) {
+        highScore = parseInt(savedHighScore, 10);
+        document.getElementById('high-score').textContent = highScore;
+    }
+}
+
+// ハイスコアを localStorage に保存する
+function saveHighScore(score) {
+    localStorage.setItem('2048HighScore', score);
 }
 
 // スワイプ操作のためのタッチイベントのセットアップ
