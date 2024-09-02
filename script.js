@@ -16,7 +16,7 @@ function initGame() {
     addRandomTile();
     updateGrid();
     updateScore(0);
-    hideGameOver();
+    hideGameOver();  // 初期化時にゲームオーバー表示を隠す
     document.addEventListener('keydown', handleKeyPress);
 }
 
@@ -171,7 +171,7 @@ function resetGame() {
     addRandomTile();
     addRandomTile();
     updateGrid();
-    hideGameOver();
+    hideGameOver();  // リセット時にゲームオーバー表示を隠す
 }
 
 function addRandomTile() {
@@ -203,9 +203,6 @@ function updateGrid() {
             tile.textContent = tileValue === 0 ? '' : tileValue;
             tile.style.backgroundColor = getTileColor(tileValue);
         }
-    }
-    if (checkGameOver()) {
-        showGameOver();
     }
 }
 
