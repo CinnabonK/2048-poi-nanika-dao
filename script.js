@@ -5,6 +5,7 @@ let score = 0;
 document.addEventListener('DOMContentLoaded', () => {
     initGame();
     document.getElementById('reset-button').addEventListener('click', resetGame);
+    setupTouchControls();  // スワイプ操作のセットアップ
 });
 
 function initGame() {
@@ -211,4 +212,45 @@ function getTileColor(value) {
         8192: '#8bc34a',// ライム
     };
     return colors[value] || '#000000'; // 他の値に対しては黒色
+}
+
+// スワイプ操作のためのタッチイベントのセットアップ
+function setupTouchControls() {
+    let touchStartX = null;
+    let touchStartY = null;
+
+    document.addEventListener('touchstart', function(event) {
+        const touch = event.touches[0];
+        touchStartX = touch.clientX;
+        touchStartY = touch.clientY;
+    });
+
+    document.addEventListener('touchmove', function(event) {
+        if (!touchStartX || !touchStartY) {
+            return;
+        }
+
+        const touchEndX = event.touches[0].clientX;
+        const touchEndY = event.touches[0].clientY;
+
+        const deltaX = touchEndX - touchStartX;
+        const deltaY = touchEndY - touchStartY;
+
+        if (Math.abs(deltaX) > Math.abs(deltaY)) {
+            if (deltaX > 0) {
+                handleKeyPress({ key: 'ArrowRight' });
+            } else {
+                handleKeyPress({ key: 'ArrowLeft' });
+            }
+        } else {
+            if (deltaY > 0) {
+                handleKeyPress({ key: 'ArrowDown' });
+            } else {
+                handleKeyPress({ key: 'ArrowUp' });
+            }
+        }
+
+        touchStartX = null;
+        touchStartY = null;
+    });
 }
