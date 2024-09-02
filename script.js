@@ -4,10 +4,11 @@ let score = 0;
 let highScore = 0;
 
 document.addEventListener('DOMContentLoaded', () => {
-    loadHighScore();  // ハイスコアの読み込み
+    loadHighScore();
     initGame();
     document.getElementById('reset-button').addEventListener('click', resetGame);
-    setupTouchControls();  // スワイプ操作のセットアップ
+    document.getElementById('retry-button').addEventListener('click', resetGame);
+    setupTouchControls();
 });
 
 function initGame() {
@@ -16,6 +17,7 @@ function initGame() {
     addRandomTile();
     updateGrid();
     updateScore(0);
+    hideGameOver();
     document.addEventListener('keydown', handleKeyPress);
 }
 
@@ -50,6 +52,9 @@ function handleKeyPress(event) {
     if (moved) {
         addRandomTile();
         updateGrid();
+        if (checkGameOver()) {
+            showGameOver();
+        }
     }
 }
 
@@ -156,7 +161,7 @@ function updateScore(value) {
     if (score > highScore) {
         highScore = score;
         document.getElementById('high-score').textContent = highScore;
-        saveHighScore(highScore);  // ハイスコアの保存
+        saveHighScore(highScore);
     }
 }
 
@@ -167,6 +172,7 @@ function resetGame() {
     addRandomTile();
     addRandomTile();
     updateGrid();
+    hideGameOver();
 }
 
 function addRandomTile() {
@@ -204,21 +210,21 @@ function updateGrid() {
 function getTileColor(value) {
     const colors = {
         0: '#cdc1b4',
-        2: '#ffeb3b',   // 黄色
-        4: '#ff9800',   // オレンジ
-        8: '#ff5722',   // 濃いオレンジ
-        16: '#f44336',  // 赤
-        32: '#e91e63',  // ピンク
-        64: '#9c27b0',  // 紫
-        128: '#673ab7', // 濃い紫
-        256: '#3f51b5', // 青
-        512: '#2196f3', // 明るい青
-        1024: '#00bcd4',// シアン
-        2048: '#009688',// 緑
-        4096: '#4caf50',// 明るい緑
-        8192: '#8bc34a',// ライム
+        2: '#ffeb3b',
+        4: '#ff9800',
+        8: '#ff5722',
+        16: '#f44336',
+        32: '#e91e63',
+        64: '#9c27b0',
+        128: '#673ab7',
+        256: '#3f51b5',
+        512: '#2196f3',
+        1024: '#00bcd4',
+        2048: '#009688',
+        4096: '#4caf50',
+        8192: '#8bc34a',
     };
-    return colors[value] || '#000000'; // 他の値に対しては黒色
+    return colors[value] || '#000000';
 }
 
 // ハイスコアを localStorage から読み込む
@@ -274,4 +280,28 @@ function setupTouchControls() {
         touchStartX = null;
         touchStartY = null;
     });
+}
+
+// ゲームオーバーをチェックする
+function checkGameOver() {
+    if (getEmptyCells().length > 0) return false;
+
+    for (let x = 0; x < gridSize; x++) {
+        for (let y = 0; y < gridSize; y++) {
+            const tile = grid[x][y];
+            if (x < gridSize - 1 && grid[x + 1][y] === tile) return false;
+            if (y < gridSize - 1 && grid[x][y + 1] === tile) return false;
+        }
+    }
+    return true;
+}
+
+// ゲームオーバー表示
+function showGameOver() {
+    document.getElementById('game-over').classList.remove('hidden');
+}
+
+// ゲームオーバーを隠す
+function hideGameOver() {
+    document.getElementById('game-over').classList.add('hidden');
 }
