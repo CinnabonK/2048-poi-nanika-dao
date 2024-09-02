@@ -39,14 +39,26 @@ body {
     align-items: center;
     font-size: 24px;
     font-weight: bold;
-    color: 000000; /* テキストカラーを白に設定 */
-    transition: background-color 0.3s ease; /* 色の変更をスムーズにする */
+    color: white;
+    transition: background-color 0.3s ease;
 }
 
-
-#reset-button {
-    padding: 10px 20px;
-    font-size: 16px;
-    margin-top: 10px;
-    cursor: pointer;
+@media (max-width: 600px) {
+    #grid-container {
+        width: 250px;
+        height: 250px;
+    }
+    
+    .tile {
+        font-size: 12px;
+    }
+    
+    .score-container {
+        font-size: 12px;
+    }
+    
+    #reset-button {
+        font-size: 12px;
+        padding: 5px 10px;
+    }
 }
